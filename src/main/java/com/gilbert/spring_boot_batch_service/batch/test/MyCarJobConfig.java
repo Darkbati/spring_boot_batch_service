@@ -31,7 +31,7 @@ public class MyCarJobConfig {
     }
 
     @Bean
-    public Job myCarJob(JobRepository jobRepository, Step myCarStartStep, Step myCarNextStep) {
+    public Job myCarJob(JobRepository jobRepository, Step myCarStartStep) {
         return new JobBuilder(JOB_NAME, jobRepository).start(myCarStartStep).build();
     }
 }
