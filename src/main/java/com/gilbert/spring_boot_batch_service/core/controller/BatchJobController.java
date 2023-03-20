@@ -1,9 +1,9 @@
-package com.gilbert.spring_boot_batch_service.controller;
+package com.gilbert.spring_boot_batch_service.core.controller;
 
 import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
 import com.gilbert.spring_boot_batch_service.core.advise.exception.RequestParameterException;
 import com.gilbert.spring_boot_batch_service.dto.BatchJob;
-import com.gilbert.spring_boot_batch_service.service.BatchJobService;
+import com.gilbert.spring_boot_batch_service.core.service.BatchJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;

@@ -1,7 +1,7 @@
-package com.gilbert.spring_boot_batch_service.advise;
+package com.gilbert.spring_boot_batch_service.core.advise;
 
-import com.gilbert.spring_boot_batch_service.advise.exception.BatchJobException;
-import com.gilbert.spring_boot_batch_service.advise.exception.RequestParameterException;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.RequestParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,14 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 @Slf4j
 @RestControllerAdvice
 public class GlobalAdviseController {
-    @ExceptionHandler(value = {RequestParameterException.class})
+    @ExceptionHandler(value = {RequestParameterException.class, BatchJobException.class})
     protected ResponseEntity<ErrorResponse> handlerRequestParameterException(RequestParameterException e) {
-        log.error(e.getMessage(), e);
-        return ErrorResponse.make(e);
-    }
-
-    @ExceptionHandler(value = {BatchJobException.class})
-    protected ResponseEntity<ErrorResponse> BatchJobException(BatchJobException e) {
         log.error(e.getMessage(), e);
         return ErrorResponse.make(e);
     }
@@ -27,6 +21,12 @@ public class GlobalAdviseController {
     @ExceptionHandler(value = {InvocationTargetException.class})
     protected ResponseEntity<ErrorResponse> InvocationTargetException(InvocationTargetException e) {
         log.error(e.getMessage(), e);
-        return null;
+        return ErrorResponse.makeInternal(e);
+    }
+
+    @ExceptionHandler(value = {Exception.class})
+    protected ResponseEntity<ErrorResponse> InvocationTargetException(Exception e) {
+        log.error(e.getMessage(), e);
+        return ErrorResponse.makeInternal(e);
     }
 }

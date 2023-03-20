@@ -1,9 +1,10 @@
-package com.gilbert.spring_boot_batch_service.advise;
+package com.gilbert.spring_boot_batch_service.core.advise;
 
-import com.gilbert.spring_boot_batch_service.advise.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.advise.exception.AdviseBaseException;
+import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.AdviseBaseException;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,14 @@ public class ErrorResponse {
                 .body(ErrorResponse.builder()
                         .status(errorCode.getHttpStatus().value())
                         .error(errorCode.getHttpStatus().name())
-                        .build()
-                );
+                        .build());
+    }
+
+    public static ResponseEntity<ErrorResponse> makeInternal(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.builder()
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .error(e.getMessage())
+                        .build());
     }
 }

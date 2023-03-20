@@ -53,10 +53,9 @@
         </rollingPolicy>
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="DAILY_ROLLING_FILE_APPENDER" />
-
         <appender-ref ref="ERROR_FILE_APPENDER" />
     </root>
 </included>

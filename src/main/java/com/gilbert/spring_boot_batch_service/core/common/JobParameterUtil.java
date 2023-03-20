@@ -1,4 +1,4 @@
-package com.gilbert.spring_boot_batch_service.common;
+package com.gilbert.spring_boot_batch_service.core.common;
 
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;

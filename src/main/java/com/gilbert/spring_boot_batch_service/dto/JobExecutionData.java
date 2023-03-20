@@ -19,5 +19,4 @@ public class JobExecutionData {
     private ExitStatus exitStatus;
     private LocalDateTime createTime;
     private LocalDateTime lastUpdated;
-
 }

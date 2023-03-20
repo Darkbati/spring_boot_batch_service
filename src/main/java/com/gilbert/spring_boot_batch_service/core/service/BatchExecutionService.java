@@ -1,4 +1,4 @@
-package com.gilbert.spring_boot_batch_service.service;
+package com.gilbert.spring_boot_batch_service.core.service;
 
 import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
 import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
