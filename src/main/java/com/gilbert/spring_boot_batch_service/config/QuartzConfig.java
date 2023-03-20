@@ -16,10 +16,9 @@ import javax.sql.DataSource;
 public class QuartzConfig {
     private final ApplicationContext applicationContext;
     private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
-    private final DataSource dataSource;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean() {
+    public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
 
