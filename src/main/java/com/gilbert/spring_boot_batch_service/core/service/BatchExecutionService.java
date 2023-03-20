@@ -1,8 +1,8 @@
 package com.gilbert.spring_boot_batch_service.service;
 
-import com.gilbert.spring_boot_batch_service.advise.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.advise.exception.BatchJobException;
-import com.gilbert.spring_boot_batch_service.common.JobParameterUtil;
+import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
+import com.gilbert.spring_boot_batch_service.core.common.JobParameterUtil;
 import com.gilbert.spring_boot_batch_service.dto.JobExecuter;
 import com.gilbert.spring_boot_batch_service.dto.JobExecutionData;
 import jakarta.annotation.PostConstruct;
@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class ExecutionService {
+public class BatchExecutionService {
     private final JobRepository jobRepository;
     private final JobExplorer jobExplorer;
     private final JobRegistry jobRegistry;

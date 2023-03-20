@@ -1,9 +1,9 @@
 package com.gilbert.spring_boot_batch_service.controller;
 
-import com.gilbert.spring_boot_batch_service.advise.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.advise.exception.RequestParameterException;
+import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.RequestParameterException;
 import com.gilbert.spring_boot_batch_service.dto.BatchJob;
-import com.gilbert.spring_boot_batch_service.service.JobService;
+import com.gilbert.spring_boot_batch_service.service.BatchJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -18,8 +18,8 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/job", produces = "application/json")
-public class JobController {
-    private final JobService jobService;
+public class BatchJobController {
+    private final BatchJobService batchJobService;
 
     @GetMapping("/name/{jobName}")
     public BatchJob get(@PathVariable String jobName) throws Exception {
@@ -27,11 +27,11 @@ public class JobController {
             throw new RequestParameterException(ErrorCode.WRONG_PARAM);
         }
 
-        return jobService.job(jobName);
+        return batchJobService.job(jobName);
     }
 
     @GetMapping("/list")
     public Collection<BatchJob> all() {
-        return jobService.getJobList();
+        return batchJobService.getJobList();
     }
 }

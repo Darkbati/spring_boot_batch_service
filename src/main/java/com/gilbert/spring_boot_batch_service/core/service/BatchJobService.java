@@ -1,7 +1,7 @@
 package com.gilbert.spring_boot_batch_service.service;
 
-import com.gilbert.spring_boot_batch_service.advise.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.advise.exception.BatchJobException;
+import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
 import com.gilbert.spring_boot_batch_service.dto.BatchJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toSet;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class JobService {
+public class BatchJobService {
     private final JobExplorer jobExplorer;
     private final JobRegistry jobRegistry;
 
