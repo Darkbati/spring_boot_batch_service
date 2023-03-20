@@ -12,11 +12,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @RequiredArgsConstructor
 @Configuration
 public class BatchConfig {
-    private final int CORE_POOL_SIZE = 15;
-    private final int MAX_POOL_SIZE = 25;
-    private final int QUEUE_CAPACITY = 10;
-    private final String THREAD_NAME_PREFIX = "async-task";
-
     public final JobRegistry jobRegistry;
 
     @Bean

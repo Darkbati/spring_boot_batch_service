@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
@@ -14,9 +15,11 @@ import javax.sql.DataSource;
 @Configuration
 public class QuartzConfig {
     private final ApplicationContext applicationContext;
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    private final DataSource dataSource;
 
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(@Qualifier("dataSource") DataSource dataSource) {
+    public SchedulerFactoryBean schedulerFactoryBean() {
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
 
@@ -25,6 +28,7 @@ public class QuartzConfig {
         schedulerFactoryBean.setJobFactory(jobFactory);
         schedulerFactoryBean.setOverwriteExistingJobs(true);
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(true);
+        schedulerFactoryBean.setTaskExecutor(threadPoolTaskExecutor);
         return schedulerFactoryBean;
     }
 }

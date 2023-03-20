@@ -18,8 +18,8 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
-import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -32,16 +32,15 @@ public class BatchExecutionService {
     private final JobRepository jobRepository;
     private final JobExplorer jobExplorer;
     private final JobRegistry jobRegistry;
+    private final ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
-    private JobLauncher asyncJobLauncher = null;
-    private JobLauncher syncJobLauncher = null;
+    private JobLauncher jobLauncher = null;
 
     private final static String RUN_ID = "run.id";
 
     @PostConstruct
     private void init() {
-        this.asyncJobLauncher = jobLauncher(new SimpleAsyncTaskExecutor(), jobRepository);
-        this.syncJobLauncher = jobLauncher(new SyncTaskExecutor(), jobRepository);
+        this.jobLauncher = jobLauncher(new SimpleAsyncTaskExecutor(threadPoolTaskExecutor), jobRepository);
     }
 
     private JobLauncher jobLauncher(TaskExecutor taskExecutor, JobRepository jobRepository) {
@@ -62,7 +61,7 @@ public class BatchExecutionService {
         JobParameters jobParameters = new JobParameters(JobParameterUtil.convertRawToParamMap(jobExecuter.getParameter()));
         log.info("Starting {} with {}", jobExecuter.getName(), jobExecuter);
 
-        JobExecution jobExecution = asyncJobLauncher.run(job, jobParameters);
+        JobExecution jobExecution = jobLauncher.run(job, jobParameters);
         return JobExecutionData.builder()
                 .id(jobExecution.getId())
                 .version(jobExecution.getVersion())
