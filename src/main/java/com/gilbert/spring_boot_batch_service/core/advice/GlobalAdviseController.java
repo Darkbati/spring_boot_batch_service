@@ -1,7 +1,7 @@
-package com.gilbert.spring_boot_batch_service.core.advise;
+package com.gilbert.spring_boot_batch_service.core.advice;
 
-import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
-import com.gilbert.spring_boot_batch_service.core.advise.exception.RequestParameterException;
+import com.gilbert.spring_boot_batch_service.core.advice.exception.BatchJobException;
+import com.gilbert.spring_boot_batch_service.core.advice.exception.RequestParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

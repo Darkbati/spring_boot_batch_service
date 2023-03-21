@@ -1,6 +1,6 @@
-package com.gilbert.spring_boot_batch_service.core.advise.exception;
+package com.gilbert.spring_boot_batch_service.core.advice.exception;
 
-import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advice.code.ErrorCode;
 import lombok.Getter;
 
 @Getter

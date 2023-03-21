@@ -1,7 +1,7 @@
 package com.gilbert.spring_boot_batch_service.core.service;
 
-import com.gilbert.spring_boot_batch_service.core.advise.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.core.advise.exception.BatchJobException;
+import com.gilbert.spring_boot_batch_service.core.advice.code.ErrorCode;
+import com.gilbert.spring_boot_batch_service.core.advice.exception.BatchJobException;
 import com.gilbert.spring_boot_batch_service.core.common.JobParameterUtil;
 import com.gilbert.spring_boot_batch_service.dto.JobExecuter;
 import com.gilbert.spring_boot_batch_service.dto.JobExecutionData;
