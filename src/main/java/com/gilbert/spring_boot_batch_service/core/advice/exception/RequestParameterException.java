@@ -2,7 +2,7 @@ package com.gilbert.spring_boot_batch_service.core.advice.exception;
 
 import com.gilbert.spring_boot_batch_service.core.advice.code.ErrorCode;
 
-public class RequestParameterException extends AdviseBaseException {
+public class RequestParameterException extends AdviceBaseException {
     public RequestParameterException(ErrorCode errorCode) {
         super(errorCode);
     }

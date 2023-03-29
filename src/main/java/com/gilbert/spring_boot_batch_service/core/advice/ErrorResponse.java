@@ -1,7 +1,7 @@
 package com.gilbert.spring_boot_batch_service.core.advice;
 
 import com.gilbert.spring_boot_batch_service.core.advice.code.ErrorCode;
-import com.gilbert.spring_boot_batch_service.core.advice.exception.AdviseBaseException;
+import com.gilbert.spring_boot_batch_service.core.advice.exception.AdviceBaseException;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class ErrorResponse {
     private final String error;
     private final String message;
 
-    public static ResponseEntity<ErrorResponse> make(AdviseBaseException e) {
+    public static ResponseEntity<ErrorResponse> make(AdviceBaseException e) {
         ErrorCode errorCode = e.getErrorCode();
         return ResponseEntity
                 .status(errorCode.getHttpStatus())

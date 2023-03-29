@@ -47,21 +47,44 @@ public class SchedulerController {
     }
 
     @PostMapping("/registry")
-    public void scheduleRegistry(@RequestBody RequestSchedulerJob requestSchedulerJob) throws Exception {
+    public SchedulerDetail scheduleRegistry(@RequestBody RequestSchedulerJob requestSchedulerJob) throws Exception {
         requestBodyValidate(requestSchedulerJob);
-        schedulerService.addScheduler(requestSchedulerJob);
+        return schedulerService.addScheduler(requestSchedulerJob);
     }
 
-    @DeleteMapping("/name/{jobName}/group/{jobGroup}/remove")
+    @DeleteMapping("/name/{jobName}/group/{jobGroup}")
     public void schedulerRemove(@PathVariable("jobName") String jobName, @PathVariable("jobGroup") String jobGroup) throws Exception {
         requestBodyJobKey(jobName, jobGroup);
         schedulerService.removeScheduler(jobName, jobGroup);
     }
 
     @PostMapping("/modify")
-    public void schedulerModify(@RequestBody RequestSchedulerJob requestSchedulerJob) throws Exception {
+    public SchedulerDetail schedulerModify(@RequestBody RequestSchedulerJob requestSchedulerJob) throws Exception {
         requestBodyValidate(requestSchedulerJob);
-        schedulerService.modifyScheduler(requestSchedulerJob);
+        return schedulerService.modifyScheduler(requestSchedulerJob);
+    }
+
+    @PostMapping("/name/{jobName}/group/{jobGroup}/{statusType}")
+    public SchedulerDetail schedulerStatus(@PathVariable("jobName") String jobName, @PathVariable("jobGroup") String jobGroup, @PathVariable("statusType") String statusType) throws Exception {
+        requestBodyJobKey(jobName, jobGroup);
+        if (!StringUtils.hasText(statusType)) {
+            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+        }
+
+        switch (statusType.toLowerCase()) {
+            case "pause":
+                schedulerService.schedulerPause(jobName, jobGroup);
+                break;
+
+            case "resume":
+                schedulerService.schedulerResume(jobName, jobGroup);
+                break;
+
+            default:
+                throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+        }
+
+        return schedulerService.schedulerDetail(jobName, jobGroup);
     }
 
     @GetMapping("/list")

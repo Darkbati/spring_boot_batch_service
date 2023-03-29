@@ -2,7 +2,7 @@ package com.gilbert.spring_boot_batch_service.core.service;
 
 import com.gilbert.spring_boot_batch_service.core.advice.code.ErrorCode;
 import com.gilbert.spring_boot_batch_service.core.advice.exception.SchedulerCustomException;
-import com.gilbert.spring_boot_batch_service.core.scheduler.job.RunJob;
+import com.gilbert.spring_boot_batch_service.core.scheduler.job.ExecutorBatchJob;
 import com.gilbert.spring_boot_batch_service.dto.SchedulerDetail;
 import com.gilbert.spring_boot_batch_service.dto.request.RequestSchedulerJob;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ public class SchedulerService {
 
     private final Scheduler scheduler;
 
-    public void addScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
+    public SchedulerDetail addScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
         JobKey jobKey = new JobKey(requestSchedulerJob.getName(), JOB_GROUP);
         if (scheduler.checkExists(jobKey)) {
-            scheduler.deleteJob(jobKey);
+            throw new SchedulerCustomException(ErrorCode.ALREADY_REGISTRY_JOB);
         }
 
-        createJob(jobKey, requestSchedulerJob);
+        return this.createJob(jobKey, requestSchedulerJob);
     }
 
     public void removeScheduler(String jobName, String jobGroup) throws Exception {
@@ -38,14 +38,14 @@ public class SchedulerService {
         scheduler.deleteJob(jobKey);
     }
 
-    public void modifyScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
+    public SchedulerDetail modifyScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
         JobKey jobKey = new JobKey(requestSchedulerJob.getName(), JOB_GROUP);
         if (!scheduler.checkExists(jobKey)) {
             throw new SchedulerCustomException(ErrorCode.NOT_FOUND_SCHEDULER);
         }
 
         scheduler.deleteJob(jobKey);
-        createJob(jobKey, requestSchedulerJob);
+        return this.createJob(jobKey, requestSchedulerJob);
     }
 
     public List<SchedulerDetail> schedulerList() throws Exception {
@@ -60,34 +60,61 @@ public class SchedulerService {
     }
 
     public SchedulerDetail schedulerDetail(String jobName, String jobGroup) throws Exception {
+        JobKey jobKey = this.checkJobKey(jobName, jobGroup);
+        return this.getJobDetail(jobKey);
+    }
+
+    public void schedulerPause(String jobName, String jobGroup) throws Exception {
+        JobKey jobKey = this.checkJobKey(jobName, jobGroup);
+        scheduler.pauseJob(jobKey);
+    }
+
+    public void schedulerResume(String jobName, String jobGroup) throws Exception {
+        JobKey jobKey = this.checkJobKey(jobName, jobGroup);
+        scheduler.resumeJob(jobKey);
+    }
+
+    private JobKey checkJobKey(String jobName, String jobGroup) throws Exception {
         JobKey jobKey = new JobKey(jobName, jobGroup);
         if (!scheduler.checkExists(jobKey)) {
             throw new SchedulerCustomException(ErrorCode.NOT_FOUND_SCHEDULER);
         }
 
-        return getJobDetail(jobKey);
+        return jobKey;
     }
 
     private SchedulerDetail getJobDetail(JobKey jobKey) throws Exception {
-        SchedulerDetail schedulerDetail = new SchedulerDetail();
-        schedulerDetail.setJobName(jobKey.getName());
-        schedulerDetail.setJobGroup(jobKey.getGroup());
-
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-        schedulerDetail.setDescription(jobDetail.getDescription());
-        schedulerDetail.setJobDataMap(jobDetail.getJobDataMap().getWrappedMap());
 
         List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
         if (triggers != null && triggers.size() > 0) {
-            schedulerDetail.setNextFireTime(triggers.get(0).getNextFireTime());
-            schedulerDetail.setPreviousFireTime(triggers.get(0).getPreviousFireTime());
-            schedulerDetail.setPriority(triggers.get(0).getPriority());
+            Trigger trigger = triggers.get(0);
+
+            return SchedulerDetail.builder()
+                    .jobName(jobKey.getName())
+                    .jobGroup(jobKey.getGroup())
+                    .description(jobDetail.getDescription())
+                    .jobDataMap(jobDetail.getJobDataMap().getWrappedMap())
+                    .nextFireTime(trigger.getNextFireTime())
+                    .previousFireTime(trigger.getPreviousFireTime())
+                    .priority(trigger.getPriority())
+                    .triggerStatus(scheduler.getTriggerState(trigger.getKey()).name())
+                    .build();
         }
 
-        return schedulerDetail;
+        return SchedulerDetail.builder()
+                .jobName(jobKey.getName())
+                .jobGroup(jobKey.getGroup())
+                .description(jobDetail.getDescription())
+                .jobDataMap(null)
+                .nextFireTime(null)
+                .previousFireTime(null)
+                .priority(null)
+                .triggerStatus(null)
+                .build();
     }
 
-    private void createJob(JobKey jobKey, RequestSchedulerJob requestSchedulerJob) throws Exception {
+    private SchedulerDetail createJob(JobKey jobKey, RequestSchedulerJob requestSchedulerJob) throws Exception {
         JobDataMap jobDataMap = new JobDataMap();
         if (requestSchedulerJob.getParam() != null) {
             jobDataMap.putAll(requestSchedulerJob.getParam());
@@ -97,10 +124,21 @@ public class SchedulerService {
                 .withIdentity(jobKey)
                 .withDescription(requestSchedulerJob.getDescription())
                 .setJobData(jobDataMap)
-                .ofType(RunJob.class)
+                .ofType(ExecutorBatchJob.class)
                 .build();
 
         Trigger trigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(requestSchedulerJob.getCronSchedule())).build();
         scheduler.scheduleJob(jobDetail, trigger);
+
+        return SchedulerDetail.builder()
+                .jobName(jobKey.getName())
+                .jobGroup(jobKey.getGroup())
+                .description(jobDetail.getDescription())
+                .jobDataMap(jobDataMap.getWrappedMap())
+                .nextFireTime(trigger.getNextFireTime())
+                .previousFireTime(trigger.getPreviousFireTime())
+                .priority(trigger.getPriority())
+                .triggerStatus(scheduler.getTriggerState(trigger.getKey()).name())
+                .build();
     }
 }
