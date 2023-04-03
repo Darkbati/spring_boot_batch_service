@@ -10,7 +10,6 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -23,9 +22,6 @@ import java.util.StringTokenizer;
 @DisallowConcurrentExecution
 public class ExecutorBatchJob extends QuartzJobBean {
     private BatchExecutionService batchExecutionService;
-
-    private final static String LOCAL_DATE = "localdate";
-    private final static String LOCAL_DATE_TIME = "localdatetime";
 
     public void setBatchExecutionService(BatchExecutionService batchExecutionService) {
         this.batchExecutionService = batchExecutionService;
@@ -42,11 +38,7 @@ public class ExecutorBatchJob extends QuartzJobBean {
         param.put("job.name", batchName);
 
         if (StringUtils.hasText(dateFunction)) {
-            if (dateFunction.toLowerCase().contains(LOCAL_DATE_TIME)) {
-                param.put("startDate", getLocalDateTime(dateFormat, dateFunction));
-            } else {
-                param.put("startDate", getLocalDate(dateFormat, dateFunction));
-            }
+            param.put("startDate", getLocalDateTime(dateFormat, dateFunction));
         }
 
         try {
@@ -70,64 +62,6 @@ public class ExecutorBatchJob extends QuartzJobBean {
     LocalDate.now().plusDays(1);
     LocalDate.now().plusDays(1).plusYears(2);
     LocalDate.now().minusDays(5).minusMonths(3).minusYears(2);
-     */
-    private String getLocalDate(String dateFormat, String dateFunction) {
-        StringTokenizer token = new StringTokenizer(dateFunction, ".");
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
-        LocalDate localDate = LocalDate.now();
-
-        while (token.hasMoreTokens()) {
-            String function = token.nextToken();
-
-            if (function.contains("plusDays")) {
-                String value = function.substring("plusDays".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.plusDays(Integer.valueOf(value));
-                }
-            } else if (function.contains("plusMonths")) {
-                String value = function.substring("plusMonths".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.plusMonths(Integer.valueOf(value));
-                }
-            } else if (function.contains("plusWeeks")) {
-                String value = function.substring("plusWeeks".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.plusWeeks(Integer.valueOf(value));
-                }
-            } else if (function.contains("plusYears")) {
-                String value = function.substring("plusYears".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.plusYears(Integer.valueOf(value));
-                }
-            } else if (function.contains("minusDays")) {
-                String value = function.substring("minusDays".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.minusDays(Integer.valueOf(value));
-                }
-            } else if (function.contains("minusMonths")) {
-                String value = function.substring("minusMonths".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.minusMonths(Integer.valueOf(value));
-                }
-            } else if (function.contains("minusWeeks")) {
-                String value = function.substring("minusWeeks".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.minusWeeks(Integer.valueOf(value));
-                }
-            } else if (function.contains("minusYears")) {
-                String value = function.substring("minusYears".length() + 1, function.length() - 1);
-                if (StringUtils.hasText(value)) {
-                    localDate = localDate.minusYears(Integer.valueOf(value));
-                }
-            }
-        }
-
-        return formatter.format(localDate);
-    }
-
-    /*
-    // 하기 함수 유형에 대해 처리할 수 있도록 정의된 함수
     LocalDateTime.now()
     LocalDateTime.now().minusHours(5).plusMinutes(10).minusSeconds(20);
     LocalDateTime.now().minusDays(5).plusYears(5).plusSeconds(50);
