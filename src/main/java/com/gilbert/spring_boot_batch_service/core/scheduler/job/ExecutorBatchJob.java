@@ -67,6 +67,15 @@ public class ExecutorBatchJob extends QuartzJobBean {
     LocalDateTime.now().minusDays(5).plusYears(5).plusSeconds(50);
      */
     private String getLocalDateTime(String dateFormat, String dateFunction) {
+        final String PLUS_DAYS = "plusDays";
+        final String PLUS_MONTHS = "plusMonths";
+        final String PLUS_WEEKS = "plusWeeks";
+        final String PLUS_YEARS = "plusYears";
+        final String MINUS_DAYS = "minusDays";
+        final String MINUS_MONTHS = "minusMonths";
+        final String MINUS_WEEKS = "minusWeeks";
+        final String MINUS_YEARS = "minusYears";
+
         StringTokenizer token = new StringTokenizer(dateFunction, ".");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
@@ -75,43 +84,43 @@ public class ExecutorBatchJob extends QuartzJobBean {
         while (token.hasMoreTokens()) {
             String function = token.nextToken();
 
-            if (function.contains("plusDays")) {
-                String value = function.substring("plusDays".length() + 1, function.length() - 1);
+            if (function.contains(PLUS_DAYS)) {
+                String value = function.substring(PLUS_DAYS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.plusDays(Integer.valueOf(value));
                 }
-            } else if (function.contains("plusMonths")) {
-                String value = function.substring("plusMonths".length() + 1, function.length() - 1);
+            } else if (function.contains(PLUS_MONTHS)) {
+                String value = function.substring(PLUS_MONTHS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.plusMonths(Integer.valueOf(value));
                 }
-            } else if (function.contains("plusWeeks")) {
-                String value = function.substring("plusWeeks".length() + 1, function.length() - 1);
+            } else if (function.contains(PLUS_WEEKS)) {
+                String value = function.substring(PLUS_WEEKS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.plusWeeks(Integer.valueOf(value));
                 }
-            } else if (function.contains("plusYears")) {
-                String value = function.substring("plusYears".length() + 1, function.length() - 1);
+            } else if (function.contains(PLUS_YEARS)) {
+                String value = function.substring(PLUS_YEARS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.plusYears(Integer.valueOf(value));
                 }
-            } else if (function.contains("minusDays")) {
-                String value = function.substring("minusDays".length() + 1, function.length() - 1);
+            } else if (function.contains(MINUS_DAYS)) {
+                String value = function.substring(MINUS_DAYS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.minusDays(Integer.valueOf(value));
                 }
-            } else if (function.contains("minusMonths")) {
-                String value = function.substring("minusMonths".length() + 1, function.length() - 1);
+            } else if (function.contains(MINUS_MONTHS)) {
+                String value = function.substring(MINUS_MONTHS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.minusMonths(Integer.valueOf(value));
                 }
-            } else if (function.contains("minusWeeks")) {
-                String value = function.substring("minusWeeks".length() + 1, function.length() - 1);
+            } else if (function.contains(MINUS_WEEKS)) {
+                String value = function.substring(MINUS_WEEKS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.minusWeeks(Integer.valueOf(value));
                 }
-            } else if (function.contains("minusYears")) {
-                String value = function.substring("minusYears".length() + 1, function.length() - 1);
+            } else if (function.contains(MINUS_YEARS)) {
+                String value = function.substring(MINUS_YEARS.length() + 1, function.length() - 1);
                 if (StringUtils.hasText(value)) {
                     localDateTime = localDateTime.minusYears(Integer.valueOf(value));
                 }
