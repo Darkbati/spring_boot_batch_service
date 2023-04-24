@@ -56,12 +56,14 @@ public class BatchExecutionService {
             throw new BatchJobException(ErrorCode.NOT_FOUND_JOB);
         }
 
-        // 아래 RUN_ID 파라메터가 중복실행 가능하도록 만들어져 있다.
-        jobExecuter.getParameter().put(RUN_ID, new Date().getTime());
-        JobParameters jobParameters = new JobParameters(JobParameterUtil.convertRawToParamMap(jobExecuter.getParameter()));
-        log.info("Starting {} with {}", jobExecuter.getName(), jobExecuter);
+        if (!jobExecuter.getParameter().containsKey("version")) {
+            jobExecuter.getParameter().put("version", this.getJobInstanceId(jobExecuter.getName()));
+        }
 
+        JobParameters jobParameters = new JobParameters(JobParameterUtil.convertRawToParamMap(jobExecuter.getParameter()));
         JobExecution jobExecution = jobLauncher.run(job, jobParameters);
+        log.info("Starting {} with {} and Status {}", jobExecuter.getName(), jobExecuter, jobExecution.getStatus().name());
+
         return JobExecutionData.builder()
                 .id(jobExecution.getId())
                 .version(jobExecution.getVersion())
@@ -74,6 +76,17 @@ public class BatchExecutionService {
                 .jobInstance(jobExecution.getJobInstance()).build();
     }
 
+    public Long getJobInstanceId(String jobName) {
+        JobInstance instance = jobExplorer.getLastJobInstance(jobName);
+        if (instance == null) {
+            return 0L;
+        }
+
+        return instance.getInstanceId();
+    }
+
+    // JobExecution List가 많으면 DB Timeout Exception 발생함
+    @Deprecated
     public List<JobExecution> getExecutionList(String jobName) throws BatchJobException {
         JobInstance instance = jobExplorer.getLastJobInstance(jobName);
         if (instance == null) {

@@ -11,6 +11,8 @@ import java.util.Map;
 @Data
 public class BatchJob {
     private String name;
+    private String description;
+    private boolean use;
     private Long executeId;
     private LocalDateTime executeLasted;
     private Map<String, JobParameter<?>> parameters;

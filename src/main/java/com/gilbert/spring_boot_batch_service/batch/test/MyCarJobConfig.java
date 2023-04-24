@@ -1,5 +1,6 @@
 package com.gilbert.spring_boot_batch_service.batch.test;
 
+import com.gilbert.spring_boot_batch_service.core.annotation.ServiceBatchJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -25,6 +26,7 @@ public class MyCarJobConfig {
         return new MyCarStartTasklet();
     }
 
+    @ServiceBatchJob(name = JOB_NAME, description = "테스트")
     @Bean
     public Step myCarStartStep(JobRepository jobRepository, Tasklet myCarStartTasklet, PlatformTransactionManager transactionManager) {
         return new StepBuilder(JOB_FIRST_STEP, jobRepository).tasklet(myCarStartTasklet, transactionManager).build();

@@ -1,5 +1,6 @@
 package com.gilbert.spring_boot_batch_service.batch.test2;
 
+import com.gilbert.spring_boot_batch_service.core.annotation.ServiceBatchJob;
 import com.gilbert.spring_boot_batch_service.dto.BatchData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class MyShipJobConfig {
         return new MyShipItemWriter();
     }
 
+    @ServiceBatchJob(name = JOB_NAME, description = "테스트2")
     @Bean
     public Step myShipStep(JobRepository jobRepository, Tasklet myTestTasklet, PlatformTransactionManager transactionManager, TaskExecutor taskExecutor) {
         return new StepBuilder(JOB_STEP, jobRepository)
