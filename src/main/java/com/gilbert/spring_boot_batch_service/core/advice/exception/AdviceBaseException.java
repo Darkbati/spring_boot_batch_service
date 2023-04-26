@@ -8,6 +8,7 @@ public class AdviceBaseException extends RuntimeException {
     private final ErrorCode errorCode;
 
     public AdviceBaseException(ErrorCode errorCode) {
+        super(errorCode.getDescription());
         this.errorCode = errorCode;
     }
 
