@@ -23,6 +23,8 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
+
+	swagger2Version = '3.0.0'
 }
 
 dependencies {
@@ -31,14 +33,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
+
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+	implementation 'io.springfox:springfox-swagger2:3.0.0'
 }
 
 tasks.named('test') {

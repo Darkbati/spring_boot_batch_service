@@ -6,14 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.batch.core.JobExecution;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -30,29 +28,25 @@ public class ExecutorBatchJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         Map<String, Object> map = context.getJobDetail().getJobDataMap().getWrappedMap();
-        String batchName = String.valueOf(map.get("batchName"));
+        String jobName = context.getJobDetail().getKey().getName();
+        String dateName = String.valueOf(map.get("dateName"));
         String dateFormat = String.valueOf(map.get("dateFormat"));
         String dateFunction = String.valueOf(map.get("dateFunction"));
 
         Map<String, Object> param = new HashMap<>();
-        param.put("job.name", batchName);
+        param.put("job.name", jobName);
 
-        if (StringUtils.hasText(dateFunction)) {
-            param.put("startDate", getLocalDateTime(dateFormat, dateFunction));
+        if (dateName.toLowerCase().contains("date")) {
+            param.put(dateName, getLocalDateTime(dateFormat, dateFunction));
         }
 
         try {
-            // version 값이 동일하면 중복 실행이 안된다.
-            List<JobExecution> list = batchExecutionService.getExecutionList(batchName);
-            if (list != null && list.size() > 0) {
-                param.put("version", list.get(0).getJobId());
-            } else {
-                param.put("version", 0);
-            }
+            param.put("version", batchExecutionService.getJobInstanceId(jobName));
 
-            batchExecutionService.launch(JobExecuter.builder().name(batchName).parameter(param).build());
+            log.info("Batch Job Name : {} , DateFormat : {}, DateFunction : {}, Version : {}", jobName, dateFormat, dateFunction, param.get("version"));
+            batchExecutionService.launch(JobExecuter.builder().name(jobName).parameter(param).build());
         } catch (Exception e) {
-            log.error("", e);
+            log.error(e.getMessage(), e);
         }
     }
 
