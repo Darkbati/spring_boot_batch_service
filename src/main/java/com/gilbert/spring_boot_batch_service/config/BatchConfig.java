@@ -19,12 +19,6 @@ import java.util.Map;
 public class BatchConfig {
     public final JobRegistry jobRegistry;
 
-    @Bean(name = "batchJobMap")
-    @Scope("singleton")
-    public Map<String, BatchJobData> batchJobMap() {
-        return new HashMap<>();
-    }
-
     @Bean
     public BeanPostProcessor jobRegistryBeanPostProcessor() throws Exception {
         JobRegistryBeanPostProcessor postProcessor = new JobRegistryBeanPostProcessor();

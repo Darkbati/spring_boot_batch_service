@@ -43,6 +43,8 @@ dependencies {
 
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	implementation 'io.springfox:springfox-swagger2:3.0.0'
+
+	implementation 'net.jodah:expiringmap:0.5.10'
 }
 
 tasks.named('test') {
