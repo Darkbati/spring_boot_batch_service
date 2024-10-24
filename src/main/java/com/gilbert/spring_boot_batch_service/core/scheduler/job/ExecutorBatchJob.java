@@ -2,10 +2,12 @@ package com.gilbert.spring_boot_batch_service.core.scheduler.job;
 
 import com.gilbert.spring_boot_batch_service.core.service.BatchExecutionService;
 import com.gilbert.spring_boot_batch_service.dto.JobExecuter;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.util.StringUtils;
 
@@ -19,11 +21,8 @@ import java.util.StringTokenizer;
 @Slf4j
 @DisallowConcurrentExecution
 public class ExecutorBatchJob extends QuartzJobBean {
+    @Resource
     private BatchExecutionService batchExecutionService;
-
-    public void setBatchExecutionService(BatchExecutionService batchExecutionService) {
-        this.batchExecutionService = batchExecutionService;
-    }
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {

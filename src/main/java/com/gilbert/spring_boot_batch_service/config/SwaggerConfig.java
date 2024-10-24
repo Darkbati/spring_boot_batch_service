@@ -1,35 +1,25 @@
 package com.gilbert.spring_boot_batch_service.config;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
+@OpenAPIDefinition(
+        info = @Info(title = "Spring Batch 시스템",
+                description = "스케줄 및 배치 처리 시스템",
+                version = "v1"))
 @Configuration
 public class SwaggerConfig {
-    private static final String BASE_PACKAGE_NAME = "com.gilbert.spring_boot_batch_service.core.controller";
-
     @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(this.swaggerInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE_NAME))
-                .paths(PathSelectors.any())
-                .build();
-    }
+    public GroupedOpenApi chatOpenApi() {
+        // "/v1/**" 경로에 매칭되는 API를 그룹화하여 문서화한다.
+        String[] paths = {"/v1/**"};
 
-    private ApiInfo swaggerInfo() {
-        return new ApiInfoBuilder()
-                .title("IFLand Batch API Documentation")
-                .description("IFLand 배치 서버 동작을 위한 API 문서입니다")
-                .license("")
-                .licenseUrl("")
-                .version("1.0.0")
+        return GroupedOpenApi.builder()
+                .group("투개더 API v1")  // 그룹 이름을 설정한다.
+                .pathsToMatch(paths)     // 그룹에 속하는 경로 패턴을 지정한다.
                 .build();
     }
 }

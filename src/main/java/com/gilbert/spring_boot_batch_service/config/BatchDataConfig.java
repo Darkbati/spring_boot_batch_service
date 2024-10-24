@@ -4,12 +4,14 @@ import com.gilbert.spring_boot_batch_service.dto.BatchJobData;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Configuration
 public class BatchDataConfig {
     @Bean(name = "expiringMap")
     @Scope("singleton")

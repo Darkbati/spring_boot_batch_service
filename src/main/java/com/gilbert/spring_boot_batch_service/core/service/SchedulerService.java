@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class SchedulerService {
-    public static final String JOB_GROUP = "IFLAND_JOB_GROUP";
+    public static final String JOB_GROUP = "JOB_GROUP";
 
     private final Scheduler scheduler;
 

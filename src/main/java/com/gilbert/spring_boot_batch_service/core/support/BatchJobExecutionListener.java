@@ -110,7 +110,7 @@ public class BatchJobExecutionListener implements JobExecutionListener {
 
             // Payload 설정
             Payload payload = Payload.builder().blocks(blocks).build();
-            String m  = payload.toString();
+            String m = payload.toString();
 
             Slack slack = Slack.getInstance();
             slack.send(url, payload);
