@@ -5,6 +5,7 @@ import com.gilbert.spring_boot_batch_service.core.advice.exception.RequestParame
 import com.gilbert.spring_boot_batch_service.core.service.BatchJobService;
 import com.gilbert.spring_boot_batch_service.dto.BatchJob;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class BatchJobController {
 
     @GetMapping("/name/{jobName}")
     @Operation(summary = "배치 잡 정보 조회", description = "배치 잡 이름에 해당하는 배치 잡 정보를 조회합니다.")
-    public BatchJob get(@PathVariable String jobName) throws Exception {
+    public BatchJob get(@Parameter(name = "jobName", description = "Batch Job Name") @PathVariable String jobName) throws Exception {
         if (!StringUtils.hasText(jobName)) {
             throw new RequestParameterException(ErrorCode.WRONG_PARAM);
         }

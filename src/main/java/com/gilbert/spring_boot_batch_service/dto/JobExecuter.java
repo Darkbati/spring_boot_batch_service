@@ -1,6 +1,10 @@
 package com.gilbert.spring_boot_batch_service.dto;
 
-import lombok.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,13 +13,11 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Schema(description = "Batch Job 실행 객체")
 public class JobExecuter {
-    //@ApiModelProperty(value = "Job 이름", dataType = "string", example = "IfpStatBatchJob")
+    @Schema(description = "Batch Name", example = "myBatchJob")
     private String name;
-    @Singular("parameter")
-    /*
-    @ApiModelProperty(value = "Job Parameters(JobDataMap)", dataType = "object",
-            example = "{\"version\":\"1.0.0\",\"dateFormat\":\"yyyy-MM-dd\",\"dateFunction\":\"LocalDateTime.now().minusDays(1)\"}")
-     */
+
+    @Schema(description = "Batch Job Data Map", example = "{\"version\":\"1.0.0\",\"dateFormat\":\"yyyy-MM-dd\",\"dateFunction\":\"LocalDateTime.now().minusDays(1)\"}")
     private Map<String, Object> parameter = new HashMap<>();
 }

@@ -6,6 +6,7 @@ import com.gilbert.spring_boot_batch_service.core.service.SchedulerService;
 import com.gilbert.spring_boot_batch_service.dto.SchedulerDetail;
 import com.gilbert.spring_boot_batch_service.dto.request.RequestSchedulerJob;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,8 @@ public class SchedulerController {
 
     @DeleteMapping("/name/{jobName}/group/{jobGroup}")
     @Operation(summary = "배치 스케줄 설정 삭제", description = "배치 그룹에서 배치 잡이름에 해당하는 배치 잡을 삭제합니다.")
-    public void schedulerRemove(@PathVariable("jobName") String jobName, @PathVariable("jobGroup") String jobGroup) throws Exception {
+    public void schedulerRemove(@Parameter(name = "jobName", description = "Batch Job Name") @PathVariable("jobName") String jobName,
+                                @Parameter(name = "jobGroup", description = "Batch Job Group") @PathVariable("jobGroup") String jobGroup) throws Exception {
         requestBodyJobKey(jobName, jobGroup);
         schedulerService.removeScheduler(jobName, jobGroup);
     }
@@ -70,7 +72,9 @@ public class SchedulerController {
 
     @PostMapping("/name/{jobName}/group/{jobGroup}/{statusType}")
     @Operation(summary = "배치 스케줄 설정[일시정지/재시작]", description = "배치 스케줄을 일시정지 또는 재시작 합니다.")
-    public SchedulerDetail schedulerStatus(@PathVariable("jobName") String jobName, @PathVariable("jobGroup") String jobGroup, @PathVariable("statusType") String statusType) throws Exception {
+    public SchedulerDetail schedulerStatus(@Parameter(name = "jobName", description = "Batch Job Name") @PathVariable("jobName") String jobName,
+                                           @Parameter(name = "jobGroup", description = "Batch Job Group") @PathVariable("jobGroup") String jobGroup,
+                                           @Parameter(name = "statusType", description = "상태 - resume or pause") @PathVariable("statusType") String statusType) throws Exception {
         requestBodyJobKey(jobName, jobGroup);
         if (!StringUtils.hasText(statusType)) {
             throw new RequestParameterException(ErrorCode.WRONG_PARAM);
@@ -100,7 +104,8 @@ public class SchedulerController {
 
     @GetMapping("/name/{jobName}/group/{jobGroup}/detail")
     @Operation(summary = "배치 스케줄 상세 조회", description = "배치 그룹에서 배치 이름에 해당하는 배치 잡의 상세 정보를 조회합니다.")
-    public SchedulerDetail schedulerDetail(@PathVariable("jobName") String jobName, @PathVariable("jobGroup") String jobGroup) throws Exception {
+    public SchedulerDetail schedulerDetail(@Parameter(name = "jobName", description = "Batch Job Name") @PathVariable("jobName") String jobName,
+                                           @Parameter(name = "jobGroup", description = "Batch Job Group") @PathVariable("jobGroup") String jobGroup) throws Exception {
         requestBodyJobKey(jobName, jobGroup);
         return schedulerService.schedulerDetail(jobName, jobGroup);
     }
