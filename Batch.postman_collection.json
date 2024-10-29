@@ -1,0 +1,265 @@
+{
+	"info": {
+		"_postman_id": "409ccc86-0bdc-494d-b71f-30617cbf408b",
+		"name": "Batch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11660080"
+	},
+	"item": [
+		{
+			"name": "Batch",
+			"item": [
+				{
+					"name": "Batch Job List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/job/list",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"job",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Batch Job Information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/job/name/MyCarJob",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"job",
+								"name",
+								"MyCarJob"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Batch Execution",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"MyCarJob\",\r\n    \"param\" : { \r\n        \"dateName\" : \"1.0\",\r\n        \"dateFormat\" : \"yyyy-mm-dd\",\r\n        \"dateFunction\" : \"LocalDateTime.now()\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/execution",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"execution"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Batch Detail History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/execution/id/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"execution",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Scheduler",
+			"item": [
+				{
+					"name": "Scheduler List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/scheduler/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"scheduler",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registry Scheduler",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"MyCarJob\",\r\n    \"description\" : \"테스트\",\r\n    \"cronSchedule\" : \"0 0/5 * * * ?\",\r\n    \"param\" : { \r\n        \"dateName\" : \"1.0\",\r\n        \"dateFormat\" : \"yyyy-mm-dd\",\r\n        \"dateFunction\" : \"LocalDateTime.now()\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/scheduler/registry",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"scheduler",
+								"registry"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "MyCarJob",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "테스트",
+									"description": "소스코드에 등록된 JOB Name",
+									"disabled": true
+								},
+								{
+									"key": "cronSchedule",
+									"value": "0 0/5 * * * ?",
+									"description": "cron ",
+									"disabled": true
+								},
+								{
+									"key": "param",
+									"value": "{ \"version\" : \"1.1\" }",
+									"description": "JSON 형태이며, Batch Job에 사용할 변수를 넣으면 됩니다. JobDataMap 이용됨",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Scheduler",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"MyCarJob\",\r\n    \"description\" : \"테스트\",\r\n    \"cronSchedule\" : \"0 0/5 * * * ?\",\r\n    \"param\" : { \r\n        \"dateName\" : \"date\",\r\n        \"dateFormat\" : \"yyyy-mm-dd\",\r\n        \"dateFunction\" : \"LocalDateTime.now()\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/scheduler/modify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"scheduler",
+								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Scheduler",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/scheduler/name/MyCarJob/group/JOB_GROUP",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"scheduler",
+								"name",
+								"MyCarJob",
+								"group",
+								"JOB_GROUP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Scheduler Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/scheduler/name/MyCarJob/group/JOB_GROUP/resume",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"scheduler",
+								"name",
+								"MyCarJob",
+								"group",
+								"JOB_GROUP",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
