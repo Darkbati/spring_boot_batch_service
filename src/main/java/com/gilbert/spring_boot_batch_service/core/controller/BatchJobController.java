@@ -29,7 +29,7 @@ public class BatchJobController {
     @Operation(summary = "배치 잡 정보 조회", description = "배치 잡 이름에 해당하는 배치 잡 정보를 조회합니다.")
     public BatchJob get(@Parameter(name = "jobName", description = "Batch Job Name") @PathVariable String jobName) throws Exception {
         if (!StringUtils.hasText(jobName)) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
 
         return batchJobService.job(jobName);

@@ -1,11 +1,13 @@
 package com.gilbert.spring_boot_batch_service.config;
 
+import com.gilbert.spring_boot_batch_service.core.multipleExecutor.MultipleExecutionFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.TaskExecutorJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,5 +38,13 @@ public class BatchConfig {
         jobLauncher.setJobRepository(jobRepository);
         jobLauncher.setTaskExecutor(taskExecutor);
         return jobLauncher;
+    }
+
+    @Bean
+    public MultipleExecutionFactory multipleExecutionFactory() {
+        MultipleExecutionFactory multipleExecutionFactory = new MultipleExecutionFactory();
+        multipleExecutionFactory.setTaskExecutor(threadPoolTaskExecutor);
+
+        return multipleExecutionFactory;
     }
 }

@@ -23,7 +23,7 @@ public class SchedulerService {
     public SchedulerDetail addScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
         JobKey jobKey = new JobKey(requestSchedulerJob.getName(), JOB_GROUP);
         if (scheduler.checkExists(jobKey)) {
-            throw new SchedulerCustomException(ErrorCode.ALREADY_REGISTRY_JOB);
+            throw SchedulerCustomException.ALREADY_REGISTRY_JOB;
         }
 
         return this.createJob(jobKey, requestSchedulerJob);
@@ -32,7 +32,7 @@ public class SchedulerService {
     public void removeScheduler(String jobName, String jobGroup) throws Exception {
         JobKey jobKey = new JobKey(jobName, jobGroup);
         if (!scheduler.checkExists(jobKey)) {
-            throw new SchedulerCustomException(ErrorCode.NOT_FOUND_SCHEDULER);
+            throw SchedulerCustomException.NOT_FOUND_SCHEDULER;
         }
 
         scheduler.deleteJob(jobKey);
@@ -41,7 +41,7 @@ public class SchedulerService {
     public SchedulerDetail modifyScheduler(RequestSchedulerJob requestSchedulerJob) throws Exception {
         JobKey jobKey = new JobKey(requestSchedulerJob.getName(), JOB_GROUP);
         if (!scheduler.checkExists(jobKey)) {
-            throw new SchedulerCustomException(ErrorCode.NOT_FOUND_SCHEDULER);
+            throw SchedulerCustomException.NOT_FOUND_SCHEDULER;
         }
 
         scheduler.deleteJob(jobKey);
@@ -77,7 +77,7 @@ public class SchedulerService {
     private JobKey checkJobKey(String jobName, String jobGroup) throws Exception {
         JobKey jobKey = new JobKey(jobName, jobGroup);
         if (!scheduler.checkExists(jobKey)) {
-            throw new SchedulerCustomException(ErrorCode.NOT_FOUND_SCHEDULER);
+            throw SchedulerCustomException.NOT_FOUND_SCHEDULER;
         }
 
         return jobKey;

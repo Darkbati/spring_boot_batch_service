@@ -26,25 +26,25 @@ public class SchedulerController {
 
     private void requestBodyJobKey(String jobName, String jobGroup) throws Exception {
         if (!StringUtils.hasText(jobName)) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
 
         if (!StringUtils.hasText(jobGroup)) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
     }
 
     private void requestBodyValidate(RequestSchedulerJob requestSchedulerJob) throws Exception {
         if (!StringUtils.hasText(requestSchedulerJob.getName())) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
 
         if (!StringUtils.hasText(requestSchedulerJob.getDescription())) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
 
         if (!StringUtils.hasText(requestSchedulerJob.getCronSchedule())) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
     }
 
@@ -77,7 +77,7 @@ public class SchedulerController {
                                            @Parameter(name = "statusType", description = "상태 - resume or pause") @PathVariable("statusType") String statusType) throws Exception {
         requestBodyJobKey(jobName, jobGroup);
         if (!StringUtils.hasText(statusType)) {
-            throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+            throw RequestParameterException.WRONG_PARAM;
         }
 
         switch (statusType.toLowerCase()) {
@@ -90,7 +90,7 @@ public class SchedulerController {
                 break;
 
             default:
-                throw new RequestParameterException(ErrorCode.WRONG_PARAM);
+                throw RequestParameterException.WRONG_PARAM;
         }
 
         return schedulerService.schedulerDetail(jobName, jobGroup);
