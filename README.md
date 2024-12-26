@@ -1,5 +1,6 @@
 # Spring Quartz와 Spring Batch 응용 방법
-Quartz와 Spring Batch는 Framework 내부에 Table Schema가 내장되어 있습니다. 이를 이용해서 
+Quartz와 Spring Batch는 Framework 내부에 Table Schema가 내장되어 있습니다. 
+아래와 같이 Table Schema를 활용하여, Scheduler Trigger와 Job 처리가 가능합니다.
 
 # Quartz Table Schema 설명
 ```
